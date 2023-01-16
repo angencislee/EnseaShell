@@ -1,0 +1,68 @@
+#include<stdio.h>
+#include<unistd.h>
+#include<stdlib.h>
+#include<string.h>
+#include<sys/wait.h> 
+
+void DisplayShell(){
+	char *welcomeMessage = "Welcome to Ensea Shell \n Write \'exit' if you want to quit ! \n";
+	write(STDOUT_FILENO, "./enseash\n", strlen("./enseash\n"));
+	write(STDOUT_FILENO, welcomeMessage, strlen(welcomeMessage));
+	
+	}
+
+	
+void executeCmde( char *cmde ){
+		
+		pid_t pid;
+		pid = fork();
+		int status;
+		 
+		if (pid==-1){
+					perror("Error with the fork \n");
+				}
+		if (pid==0){
+					execlp(cmde, cmde, NULL);
+					exit(EXIT_SUCCESS);
+				}
+		else{
+			wait(&status);
+		}
+		
+		
+		
+	}	
+
+
+
+//Function to leave		
+void exitFunction(){
+	write(STDOUT_FILENO,"\t Bye bye ...\n\n",strlen("\t Bye bye ...\n\n") );
+	exit(EXIT_SUCCESS); 
+	}
+
+
+
+int main(){
+	DisplayShell();
+	char command[256]; 
+	int number;
+	
+	
+	while (1){
+		write(STDOUT_FILENO, "enseash % ", strlen("enseash % "));
+		number =read(STDIN_FILENO,command,256);
+		if (number!=0){
+			command[number-1]= '\0';
+		}
+		if (strcmp(command,"exit")==0 ||number==0){
+			exitFunction();
+		}
+		executeCmde(command);	
+		// strcmp helps us to compare the command
+		// it is also executed in the case where we are in the father process
+		
+		
+	}
+	return 0;
+}
