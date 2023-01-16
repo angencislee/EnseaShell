@@ -1,4 +1,6 @@
 # EnseaShell
+
+LI Guolinhao & Quentin DELACHAISE
 The 1st subject EnseaSH.
 
 Here we have first 7 sections of code.
